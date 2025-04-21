@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Awareness Training Suite</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      display: none;
+      padding: 40px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .url-bar {
+      background: #eee;
+      padding: 10px;
+      font-family: monospace;
+      color: red;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin-top: 15px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .topbar {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar .toggle {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dark-mode .box {
+      background: #1e1e1e;
+      color: #f4f4f4;
+    }
+
+    .dark-mode .topbar {
+      background: #333;
+    }
+
+    .dark-mode .url-bar {
+      background: #333;
+      color: orange;
+    }
+
+    ul {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    .download-link {
+      color: red;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>🔐 Cyber Awareness Suite</div>
+  <div class="toggle" onclick="toggleDarkMode()">🌓 Dark Mode</div>
+</div>
+
+<!-- Main Training Portal -->
+<div class="page active" id="portalPage">
+  <h2>Welcome to Cyber Awareness Training</h2>
+  <div class="box">
+    <h3>Choose Your Training Module</h3>
+    <button onclick="startPhishing()">Phishing Simulation</button><br><br>
+    <button onclick="startMalware()">Malware Awareness</button><br><br>
+    <button onclick="startQuiz()">Cyber Quiz</button>
+  </div>
+</div>
+
+<!-- Phishing Simulation -->
+<div class="page" id="phishingPage">
+  <h2>📥 Phishing Email Simulation</h2>
+  <div class="box" onclick="showPage('loginPage')">
+    <strong>From:</strong> IT Security Team (security@company-support.com)<br>
+    <strong>Subject:</strong> Immediate Password Reset Required<br><br>
+    Your password has expired. Click below to reset it.<br><br>
+    👉 <em>Reset Now</em>
+  </div>
+</div>
+
+<!-- Login Page -->
+<div class="page" id="loginPage">
+  <div class="url-bar">🔒 http://company-support-reset.com</div>
+  <div class="box">
+    <h2>Company Login</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="goTo2FA()">Login</button>
+  </div>
+</div>
+
+<!-- 2FA Prompt -->
+<div class="page" id="faPage">
+  <div class="url-bar">🔒 http://company-support-reset.com</div>
+  <div class="box">
+    <h2>Two-Factor Authentication</h2>
+    <input type="text" id="code" placeholder="6-digit code">
+    <button onclick="goToReport()">Verify</button>
+  </div>
+</div>
+
+<!-- Report Page -->
+<div class="page" id="reportPage">
+  <div class="box">
+    <h2>🎉 Phishing Awareness Report</h2>
+    <p><strong>This was a simulation.</strong></p>
+    <p>You entered:</p>
+    <ul>
+      <li>👤 Username: <span id="outUser"></span></li>
+      <li>🔑 Password: <span id="outPass"></span></li>
+      <li>📲 2FA Code: <span id="outCode"></span></li>
+    </ul>
+    <button onclick="downloadReport()">📄 Download Report</button>
+    <button onclick="showPage('portalPage')">Back to Portal</button>
+  </div>
+</div>
+
+<!-- Malware Awareness -->
+<div class="page" id="malwarePage">
+  <h2>💣 Malware Awareness</h2>
+  <div class="box">
+    <p><strong>Fake Malware Alert:</strong> You received an email with a suspicious attachment.</p>
+    <button onclick="simulateMalware()">Download Suspicious File</button><br><br>
+    <button onclick="showPage('portalPage')">Back to Portal</button>
+  </div>
+</div>
+
+<!-- Cyber Quiz -->
+<div class="page" id="quizPage">
+  <h2>🧠 Cyber Awareness Quiz</h2>
+  <div class="box">
+    <p><strong>Question 1:</strong> What is a phishing attack?</p>
+    <button onclick="answerQuestion('correct')">An attempt to steal sensitive information</button><br>
+    <button onclick="answerQuestion('incorrect')">A type of malware</button><br>
+    <button onclick="answerQuestion('incorrect')">A firewall security breach</button><br><br>
+    <button onclick="showPage('portalPage')">Back to Portal</button>
+  </div>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function startPhishing() {
+    showPage('phishingPage');
+  }
+
+  function startMalware() {
+    showPage('malwarePage');
+  }
+
+  function startQuiz() {
+    showPage('quizPage');
+  }
+
+  function goTo2FA() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+    if (user && pass) {
+      sessionStorage.setItem("phishUser", user);
+      sessionStorage.setItem("phishPass", pass);
+      showPage('faPage');
+    } else {
+      alert("Please enter both username and password.");
+    }
+  }
+
+  function goToReport() {
+    const code = document.getElementById('code').value;
+    sessionStorage.setItem("phishCode", code || "None");
+    document.getElementById("outUser").innerText = sessionStorage.getItem("phishUser");
+    document.getElementById("outPass").innerText = "*".repeat(sessionStorage.getItem("phishPass").length);
+    document.getElementById("outCode").innerText = sessionStorage.getItem("phishCode");
+    showPage("reportPage");
+  }
+
+  function downloadReport() {
+    const user = sessionStorage.getItem("phishUser");
+    const pass = sessionStorage.getItem("phishPass");
+    const code = sessionStorage.getItem("phishCode");
+
+    const report = `
+Phishing Awareness Simulation Report
+------------------------------------
+🧑 Username entered: ${user}
+🔑 Password entered: ${'*'.repeat(pass.length)} (captured)
+📲 2FA Code entered: ${code}
+
+🛡️ This was a training simulation.
+📝 Lessons:
+- Always verify the sender’s email
+- Never click suspicious links
+- Check URLs before entering credentials
+- Report suspicious emails to IT Security
+
+👍 Great job participating in this simulation!
+`;
+
+    const blob = new Blob([report], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.download = "phishing_awareness_report.txt";
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  }
+
+  function simulateMalware() {
+    alert("⚠️ You clicked on a suspicious file download. This was a phishing test. Never download files from unknown sources!");
+  }
+
+  function answerQuestion(result) {
+    if (result === 'correct') {
+      alert("✅ Correct! Phishing is an attempt to steal sensitive information.");
+    } else {
+      alert("❌ Incorrect. Phishing is an attempt to steal sensitive information.");
+    }
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
+</script>
+
+</body>
+</html>
